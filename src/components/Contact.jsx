@@ -32,7 +32,7 @@ export default function Contact({ onShowToast }) {
     setTimeout(() => setCopiedEmail(false), 3000);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
       onShowToast && onShowToast("Please complete required form fields.");
@@ -40,11 +40,45 @@ export default function Contact({ onShowToast }) {
     }
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      onShowToast && onShowToast("Message sent successfully! Hamzath will get back to you soon.");
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/hamzathsufide00@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject || `New Contact Form Message from ${formData.name}`,
+          _subject: formData.subject || `New Contact Form Message from ${formData.name}`,
+          message: formData.message,
+          _template: "table"
+        })
+      });
+
+      const result = await response.json();
+
+      if (response.ok && (result.success === "true" || result.success === true || result.message)) {
+        onShowToast && onShowToast("Message sent! Delivered directly to hamzathsufide00@gmail.com.");
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        // Graceful fallback to mailto if service requires standard activation
+        const mailtoUrl = `mailto:hamzathsufide00@gmail.com?subject=${encodeURIComponent(formData.subject || 'Portfolio Contact Form')}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+        window.location.href = mailtoUrl;
+        onShowToast && onShowToast("Opening your mail app to send directly to hamzathsufide00@gmail.com!");
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      const mailtoUrl = `mailto:hamzathsufide00@gmail.com?subject=${encodeURIComponent(formData.subject || 'Portfolio Contact Form')}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+      window.location.href = mailtoUrl;
+      onShowToast && onShowToast("Opening your mail app to send directly to hamzathsufide00@gmail.com!");
       setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 1000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -235,17 +269,20 @@ export default function Contact({ onShowToast }) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 rounded-xl text-sm font-bold bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/30 hover:shadow-red-600/50 hover:scale-[1.01] transition-all flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-xl text-sm font-bold bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/30 hover:shadow-red-600/50 hover:scale-[1.01] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {isSubmitting ? (
-                  <span>Sending Message...</span>
+                  <span>Sending to hamzathsufide00@gmail.com...</span>
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    <span>Send Message</span>
+                    <span>Send Message to Hamzath</span>
                   </>
                 )}
               </button>
+              <p className="text-[11px] text-center text-zinc-500 font-medium">
+                🔒 Messages are delivered directly to <span className="text-red-400 font-semibold">hamzathsufide00@gmail.com</span>
+              </p>
             </form>
           </div>
 
