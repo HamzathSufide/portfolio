@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --brand-red: #D90429;
+    --brand-red-light: #EF233C;
+    --brand-red-dark: #A0031E;
+    --brand-dark: #111111;
+    --brand-charcoal: #1E1E24;
+    --brand-white: #FFFFFF;
+    --brand-gray: #F8F9FA;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #111111;
+    background-color: #FFFFFF;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+}
+
+/* Custom Red Accent Utilities */
+.text-brand-red {
+  color: #D90429;
+}
+
+.bg-brand-red {
+  background-color: #D90429;
+}
+
+.border-brand-red {
+  border-color: #D90429;
+}
+
+.gradient-brand-red {
+  background: linear-gradient(135deg, #D90429 0%, #EF233C 100%);
+}
+
+.gradient-dark-red {
+  background: linear-gradient(135deg, #111111 0%, #1E1E24 50%, #2B0007 100%);
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(217, 4, 41, 0.12);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+}
+
+.glass-card:hover {
+  border-color: rgba(217, 4, 41, 0.35);
+  box-shadow: 0 15px 35px -10px rgba(217, 4, 41, 0.15);
+}
+
+.glass-card-dark {
+  background: rgba(17, 17, 17, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(217, 4, 41, 0.25);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+}
+
+.glass-card-dark:hover {
+  border-color: rgba(239, 35, 60, 0.5);
+  box-shadow: 0 15px 35px -10px rgba(217, 4, 41, 0.3);
+}
+
+/* Glowing Border Effects */
+.red-glow {
+  box-shadow: 0 0 25px rgba(217, 4, 41, 0.3);
+}
+
+.red-glow-lg {
+  box-shadow: 0 0 40px rgba(217, 4, 41, 0.4);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1F3F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D90429;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #EF233C;
+}
+
+/* Pulse Glow Animation */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(217, 4, 41, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(217, 4, 41, 0.5);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+/* Red Line Accent */
+.red-line-bottom {
+  position: relative;
+}
+
+.red-line-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background-color: #D90429;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.red-line-bottom:hover::after {
+  width: 100%;
+}
